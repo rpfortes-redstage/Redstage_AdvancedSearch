@@ -1,0 +1,95 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+?>
+<?php
+/** @var $block \Magento\Framework\View\Element\Template */
+/** @var $helper \Magento\Search\Helper\Data */
+$helper = $this->helper('Magento\Search\Helper\Data');
+?>
+<div class="block block-search">
+    <div class="block block-title"><strong><?= /* @escapeNotVerified */ __('Search') ?></strong></div>
+    <div class="block block-content">
+        <form class="form minisearch" id="search_mini_form" action="<?= /* @escapeNotVerified */ $helper->getResultUrl() ?>" method="get">
+            <div class="field search">
+                <label class="label" for="search" data-role="minisearch-label">
+                    <span><?= /* @escapeNotVerified */ __('Search') ?></span>
+                </label>
+                <div class="control">
+                    <input id="search"
+                           type="text"
+                           name="<?= /* @escapeNotVerified */ $helper->getQueryParamName() ?>"
+                           value="<?= /* @escapeNotVerified */ $helper->getEscapedQueryText() ?>"
+                           placeholder="<?= /* @escapeNotVerified */ __('Search entire store here...') ?>"
+                           class="input-text"
+                           maxlength="<?= /* @escapeNotVerified */ $helper->getMaxQueryLength() ?>"
+                           role="combobox"
+                           aria-haspopup="false"
+                           aria-autocomplete="both"
+                           autocomplete="off"/>
+
+
+                    <div id="search_autocomplete" class="search-autocomplete" style="position: absolute;width: 250px;">
+                        <ul role="listbox">
+
+                        </ul>
+
+                    </div>
+                    <div id="redstage-advancedsearch-loader" class="redstage-advancedsearch-loader" style="margin-top: -25.5px; display:none; ">loading</div>
+                    <script id="search-template" type="text/x-magento-template">
+                        <li>
+                            <a href="<%- data.url %>">Name : <%- data.name %></a>
+                        </li>
+                    </script>
+
+                </div>
+            </div>
+            <div class="actions">
+                <button type="submit"
+                        title="<?= $block->escapeHtml(__('Search')) ?>"
+                        class="action search">
+                    <span><?= /* @escapeNotVerified */ __('Search') ?></span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    /*@TODO
+       Refactor: Move to javascript file
+     */
+    require(['jquery', 'jquery/ui', 'mage/template'], function($, _, template){
+        var url =  '<?php echo $block->getUrl('advancedsearch/search/index') ?>';
+        var server_url = '<?php echo $block->getUrl() ?>';
+
+        $('#search').keyup(function(event) {
+            // $('#search_autocomplete').html('');
+
+            var query_string =  $('#search').val();
+            if(query_string.length > 3) {
+                $.ajax({
+                    url: url,
+                    data: {"name": query_string},
+                    type: "GET",
+                    dataType: 'json'
+                }).done(function (response) {
+                    var html = "";
+                    $.each(response.data, function () {
+                        var product_url = server_url+ this['url_key']+'.html';
+                        html += template('#search-template', {data: {name: this['name'], url: product_url}});
+                    });
+                    $('#search_autocomplete ul').html(html);
+                    $('#search_autocomplete').show();
+                    $('#redstage-advancedsearch-loader').show();
+                })
+            }
+        });
+    });
+
+</script>

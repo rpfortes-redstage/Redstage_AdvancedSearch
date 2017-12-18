@@ -1,0 +1,30 @@
+{
+  "name": "redstage/advancedsearch",
+  "description":  "",
+  "type": "magento2-module",
+  "version": "0.0.1",
+  "licence": [
+    "OSL-3.0"
+  ],
+  "require":{
+    "php": " 7.0.0",
+    "magento/magento-composer-installer": "*"
+  },
+  "authors": [
+    {
+      "name": "Redstage World Wide, LLC",
+      "email": "info@redstage.com"
+    }
+  ],
+  "autoload":{
+    "files": [
+      "registration.php"
+    ]
+  },
+  "extra": {
+    "map": [
+          "*",
+          "Redstage/AdvancedSearch"
+    ]
+  }
+}

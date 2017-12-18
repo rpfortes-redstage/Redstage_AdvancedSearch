@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @category    Redstage
+ * @package     Redstage_AdvancedSearch
+ * @author      Redstage Worldwide, LLC
+ * @copyright   Copyright (c) 2017 Redstage Worldwide, LLC (http://www.redstage.com)
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="redstage" translate="label" sortOrder="1" class="redstage-tab">
+            <label>Redstage Extensions</label>
+        </tab>
+        <section id="redstage_advancedsearch" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Advanced Search</label>
+            <tab>redstage</tab>
+            <resource>Redstage_AdvancedSearch::config_system</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General</label>
+                <field id="enabled" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
