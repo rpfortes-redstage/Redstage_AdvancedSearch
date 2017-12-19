@@ -37,9 +37,8 @@ $helper = $this->helper('Magento\Search\Helper\Data');
                         <ul role="listbox">
 
                         </ul>
-
                     </div>
-                    <div id="redstage-advancedsearch-loader" class="redstage-advancedsearch-loader" style="margin-top: -25.5px; display:none; ">loading</div>
+                    <div id="redstage-advancedsearch-loader" class="redstage-advancedsearch-loader"></div>
                     <script id="search-template" type="text/x-magento-template">
                         <li>
                             <a href="<%- data.url %>">Name : <%- data.name %></a>
@@ -58,38 +57,3 @@ $helper = $this->helper('Magento\Search\Helper\Data');
         </form>
     </div>
 </div>
-
-
-<script type="text/javascript">
-    /*@TODO
-       Refactor: Move to javascript file
-     */
-    require(['jquery', 'jquery/ui', 'mage/template'], function($, _, template){
-        var url =  '<?php echo $block->getUrl('advancedsearch/search/index') ?>';
-        var server_url = '<?php echo $block->getUrl() ?>';
-
-        $('#search').keyup(function(event) {
-            // $('#search_autocomplete').html('');
-
-            var query_string =  $('#search').val();
-            if(query_string.length > 3) {
-                $.ajax({
-                    url: url,
-                    data: {"name": query_string},
-                    type: "GET",
-                    dataType: 'json'
-                }).done(function (response) {
-                    var html = "";
-                    $.each(response.data, function () {
-                        var product_url = server_url+ this['url_key']+'.html';
-                        html += template('#search-template', {data: {name: this['name'], url: product_url}});
-                    });
-                    $('#search_autocomplete ul').html(html);
-                    $('#search_autocomplete').show();
-                    $('#redstage-advancedsearch-loader').show();
-                })
-            }
-        });
-    });
-
-</script>
