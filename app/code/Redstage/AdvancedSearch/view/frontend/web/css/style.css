@@ -1,0 +1,12 @@
+#redstage-advancedsearch-loader{
+    top: 12px;
+    left: 201px;
+    display: none;
+    background-image: url('../images/loader.gif');
+    background-size: 16px 11px;
+    width: 16px;
+    height: 11px;
+    z-index: 4;
+    position: absolute;
+    background-repeat: no-repeat;
+}

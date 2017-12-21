@@ -9,6 +9,7 @@ use Magento\Framework\Controller\Result\JsonFactory;
 
 class Index extends Action
 {
+    
     protected $_jsonFactory;
 
     protected $_collectionFactory;
@@ -50,55 +51,20 @@ class Index extends Action
         $result = $this->_jsonFactory->create();
         $value = $this->getRequest()->getParam('name');
         
-        /*@TODO
-        Refator the search
-        */
-        /*$collection = $this->_objectManager->create('Magento\Catalog\Model\ResourceModel\Product\Collection')
-                    ->addAttributeToSelect(['name', 'price', 'image', 'url_key'])
-                    ->addAttributeToFilter('name', array('like' => '%'.$value.'%'))
-                    ->setPageSize(10, 1);
-        */
-
         $collection = $this->productCollection->create();
         $this->extensionAttributesJoinProcessor->process($collection);
-//        $collection->addAttributeToSelect(['name']);
         $collection->addAttributeToSelect('*');
         $collection->joinAttribute('url_key', 'catalog_product/url_key', 'entity_id', null, 'inner');
         $collection->setVisibility($this->catalogProductVisibility->getVisibleInCatalogIds());
 
         $this->stockFilter->addInStockFilterToCollection($collection);
 
-//        $collection->addUrlRewrite();
         $collection->addAttributeToFilter('name', ['like' => '%'.$value.'%']);
         $collection->load();
-
-//        echo '<pre>';
-//        print_r($collection->getData()); exit;
 
         if(!empty($this->getRequest()->getQueryValue())){
             $result->setData(['data' => $collection->getData()]);
         }
-
-
-        /*
-        $collection = $this->productCollection->create();
-        $this->extensionAttributesJoinProcessor->process($collection);
-
-        $collection->addAttributeToSelect('*');
-        $collection->joinAttribute('status', 'catalog_product/status', 'entity_id', null, 'inner');
-        $collection->joinAttribute('visibility', 'catalog_product/visibility', 'entity_id', null, 'inner');
-
-        $collection->setCurPage(1);
-        $collection->setPageSize(100);
-        $collection->load();
-
-        $searchResult = $this->searchResultsFactory->create();
-        $searchResult->setItems($collection->getItems());
-        $searchResult->setTotalCount($collection->getSize());
-
-    return $searchResult;
-         */
-
 
         return $result;
     }

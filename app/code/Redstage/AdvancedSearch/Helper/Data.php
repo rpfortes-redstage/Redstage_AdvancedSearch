@@ -13,8 +13,4 @@ class Data extends AbstractHelper
     public function isEnabled(){
         return $this->scopeConfig->getValue(self::XML_PATH_ENABLED,ScopeInterface::SCOPE_STORE);
     }
-
-    /*public function getConfigData($field){
-        return $this->scopeConfig->getValue(self::XML_PATH_ENABLED.$field,ScopeInterface::SCOPE_STORE);
-    }*/
 }
